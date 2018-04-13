@@ -32,6 +32,7 @@ const internalProps = {
     children: true,
     alwaysShowPreviousAndNext: true,
     showFirstAndLast: true,
+    extraChildren: true,
 };
 
 export function filterPropsFrom(baseProps) {

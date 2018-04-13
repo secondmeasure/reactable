@@ -49,7 +49,8 @@ window.ReactDOM["default"] = window.ReactDOM;
         data: true,
         children: true,
         alwaysShowPreviousAndNext: true,
-        showFirstAndLast: true
+        showFirstAndLast: true,
+        extraChildren: true
     };
 
     function filterPropsFrom(baseProps) {
@@ -1593,6 +1594,7 @@ window.ReactDOM["default"] = window.ReactDOM;
                     _react['default'].createElement(
                         'tbody',
                         { className: 'reactable-data', key: 'tbody' },
+                        this.props.extraChildren,
                         currentChildren.length > 0 ? currentChildren : noDataText
                     ),
                     pagination === true ? _react['default'].createElement(_paginator.Paginator, { colSpan: columns.length,

@@ -932,7 +932,7 @@ window.ReactDOM["default"] = window.ReactDOM;
                         { className: 'reactable-previous-page',
                             disabled: !enabled,
                             href: pageHref(this.props.currentPage - 1),
-                            onClick: this.handlePrevious.bind(this) },
+                            onClick: enabled ? this.handlePrevious.bind(this) : undefined },
                         this.props.previousPageLabel || 'Previous'
                     );
                 }
@@ -947,7 +947,7 @@ window.ReactDOM["default"] = window.ReactDOM;
                         { className: 'reactable-next-page',
                             disabled: !enabled,
                             href: pageHref(this.props.currentPage + 1),
-                            onClick: this.handleNext.bind(this) },
+                            onClick: enabled ? this.handleNext.bind(this) : undefined },
                         this.props.nextPageLabel || 'Next'
                     );
                 }
@@ -955,13 +955,14 @@ window.ReactDOM["default"] = window.ReactDOM;
         }, {
             key: 'renderFirst',
             value: function renderFirst() {
+                var enabled = this.props.numPages !== 0;
                 if (this.props.showFirstAndLast) {
                     return _react['default'].createElement(
                         'a',
                         { className: 'reactable-first-page',
-                            disabled: this.props.numPages === 0,
+                            disabled: !enabled,
                             href: pageHref(0),
-                            onClick: this.handleFirst.bind(this) },
+                            onClick: enabled ? this.handleFirst.bind(this) : undefined },
                         this.props.firstPageLabel || 'First'
                     );
                 }
@@ -969,13 +970,14 @@ window.ReactDOM["default"] = window.ReactDOM;
         }, {
             key: 'renderLast',
             value: function renderLast() {
+                var enabled = this.props.numPages !== 0;
                 if (this.props.showFirstAndLast) {
                     return _react['default'].createElement(
                         'a',
                         { className: 'reactable-last-page',
-                            disabled: this.props.numPages === 0,
+                            disabled: !enabled,
                             href: pageHref(this.props.numPages - 1),
-                            onClick: this.handleLast.bind(this) },
+                            onClick: enabled ? this.handleLast.bind(this) : undefined },
                         this.props.lastPageLabel || 'Last'
                     );
                 }

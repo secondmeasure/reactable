@@ -36,7 +36,7 @@ export class Paginator extends React.Component {
             return <a className='reactable-previous-page'
                       disabled={!enabled}
                       href={pageHref(this.props.currentPage - 1)}
-                      onClick={this.handlePrevious.bind(this)}>
+                      onClick={enabled ? this.handlePrevious.bind(this) : undefined}>
                         {this.props.previousPageLabel || 'Previous'}
                    </a>
         }
@@ -48,29 +48,31 @@ export class Paginator extends React.Component {
             return <a className='reactable-next-page'
                       disabled={!enabled}
                       href={pageHref(this.props.currentPage + 1)}
-                      onClick={this.handleNext.bind(this)}>
+                      onClick={enabled ? this.handleNext.bind(this) : undefined}>
                       {this.props.nextPageLabel || 'Next'}
                    </a>
         }
     }
 
     renderFirst() {
+        const enabled = this.props.numPages !== 0;
         if(this.props.showFirstAndLast) {
             return <a className='reactable-first-page'
-                      disabled={this.props.numPages === 0}
+                      disabled={!enabled}
                       href={pageHref(0)}
-                      onClick={this.handleFirst.bind(this)}>
+                      onClick={enabled ? this.handleFirst.bind(this) : undefined}>
                         {this.props.firstPageLabel || 'First'}
                    </a>
         }
     }
 
     renderLast() {
+        const enabled = this.props.numPages !== 0;
         if(this.props.showFirstAndLast) {
             return <a className='reactable-last-page'
-                      disabled={this.props.numPages === 0}
+                      disabled={!enabled}
                       href={pageHref(this.props.numPages - 1)}
-                      onClick={this.handleLast.bind(this)}>
+                      onClick={enabled ? this.handleLast.bind(this) : undefined}>
                       {this.props.lastPageLabel || 'Last'}
                    </a>
         }

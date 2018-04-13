@@ -518,6 +518,10 @@ export class Table extends React.Component {
                  }}
                  previousPageLabel={this.props.previousPageLabel}
                  nextPageLabel={this.props.nextPageLabel}
+                 firstPageLabel={this.props.firstPageLabel}
+                 lastPageLabel={this.props.lastPageLabel}
+                 alwaysShowPreviousAndNext={this.props.alwaysShowPreviousAndNext}
+                 showFirstAndLast={this.props.showFirstAndLast}
                  key="paginator"/>
              : null}
             {this.tfoot}
@@ -531,5 +535,7 @@ Table.defaultProps = {
     defaultSortDescending: false,
     itemsPerPage: 0,
     filterBy: '',
-    hideFilterInput: false
+    hideFilterInput: false,
+    alwaysShowPreviousAndNext: false,
+    showFirstAndLast: false
 };

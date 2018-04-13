@@ -6,13 +6,23 @@ function pageHref(num) {
 
 export class Paginator extends React.Component {
     handlePrevious(e) {
-        e.preventDefault()
+        e.preventDefault();
         this.props.onPageChange(this.props.currentPage - 1)
     }
 
     handleNext(e) {
-        e.preventDefault()
+        e.preventDefault();
         this.props.onPageChange(this.props.currentPage + 1);
+    }
+
+    handleFirst(e) {
+        e.preventDefault();
+        this.props.onPageChange(0)
+    }
+
+    handleLast(e) {
+        e.preventDefault();
+        this.props.onPageChange(this.props.numPages - 1);
     }
 
     handlePageButton(page, e) {
@@ -21,8 +31,10 @@ export class Paginator extends React.Component {
     }
 
     renderPrevious() {
-        if(this.props.currentPage > 0) {
+        const enabled = this.props.currentPage > 0;
+        if(this.props.alwaysShowPreviousAndNext || enabled) {
             return <a className='reactable-previous-page'
+                      disabled={!enabled}
                       href={pageHref(this.props.currentPage - 1)}
                       onClick={this.handlePrevious.bind(this)}>
                         {this.props.previousPageLabel || 'Previous'}
@@ -31,8 +43,10 @@ export class Paginator extends React.Component {
     }
 
     renderNext() {
-        if(this.props.currentPage < this.props.numPages - 1) {
+        const enabled = this.props.currentPage < this.props.numPages - 1;
+        if(this.props.alwaysShowPreviousAndNext || enabled) {
             return <a className='reactable-next-page'
+                      disabled={!enabled}
                       href={pageHref(this.props.currentPage + 1)}
                       onClick={this.handleNext.bind(this)}>
                       {this.props.nextPageLabel || 'Next'}
@@ -40,14 +54,35 @@ export class Paginator extends React.Component {
         }
     }
 
-    renderPageButton(className, pageNum) {
+    renderFirst() {
+        if(this.props.showFirstAndLast) {
+            return <a className='reactable-first-page'
+                      disabled={this.props.numPages === 0}
+                      href={pageHref(0)}
+                      onClick={this.handleFirst.bind(this)}>
+                        {this.props.firstPageLabel || 'First'}
+                   </a>
+        }
+    }
 
+    renderLast() {
+        if(this.props.showFirstAndLast) {
+            return <a className='reactable-last-page'
+                      disabled={this.props.numPages === 0}
+                      href={pageHref(this.props.numPages - 1)}
+                      onClick={this.handleLast.bind(this)}>
+                      {this.props.lastPageLabel || 'Last'}
+                   </a>
+        }
+    }
+
+    renderPageButton(className, pageNum) {
         return <a className={className}
                   key={pageNum}
                   href={pageHref(pageNum)}
                   onClick={this.handlePageButton.bind(this, pageNum)}>
                   {pageNum + 1}
-              </a>
+               </a>
     }
 
     render() {
@@ -96,9 +131,11 @@ export class Paginator extends React.Component {
             <tbody className="reactable-pagination">
                 <tr>
                     <td colSpan={this.props.colSpan}>
+                        {this.renderFirst()}
                         {this.renderPrevious()}
                         {pageButtons}
                         {this.renderNext()}
+                        {this.renderLast()}
                     </td>
                 </tr>
             </tbody>

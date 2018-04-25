@@ -42,10 +42,15 @@ window.ReactDOM["default"] = window.ReactDOM;
         onPageChange: true,
         previousPageLabel: true,
         nextPageLabel: true,
+        firstPageLabel: true,
+        lastPageLabel: true,
         pageButtonLimit: true,
         childNode: true,
         data: true,
-        children: true
+        children: true,
+        alwaysShowPreviousAndNext: true,
+        showFirstAndLast: true,
+        extraChildren: true
     };
 
     function filterPropsFrom(baseProps) {
@@ -900,6 +905,18 @@ window.ReactDOM["default"] = window.ReactDOM;
                 this.props.onPageChange(this.props.currentPage + 1);
             }
         }, {
+            key: 'handleFirst',
+            value: function handleFirst(e) {
+                e.preventDefault();
+                this.props.onPageChange(0);
+            }
+        }, {
+            key: 'handleLast',
+            value: function handleLast(e) {
+                e.preventDefault();
+                this.props.onPageChange(this.props.numPages - 1);
+            }
+        }, {
             key: 'handlePageButton',
             value: function handlePageButton(page, e) {
                 e.preventDefault();
@@ -908,12 +925,14 @@ window.ReactDOM["default"] = window.ReactDOM;
         }, {
             key: 'renderPrevious',
             value: function renderPrevious() {
-                if (this.props.currentPage > 0) {
+                var enabled = this.props.currentPage > 0;
+                if (this.props.alwaysShowPreviousAndNext || enabled) {
                     return _react['default'].createElement(
                         'a',
                         { className: 'reactable-previous-page',
+                            disabled: !enabled,
                             href: pageHref(this.props.currentPage - 1),
-                            onClick: this.handlePrevious.bind(this) },
+                            onClick: enabled ? this.handlePrevious.bind(this) : undefined },
                         this.props.previousPageLabel || 'Previous'
                     );
                 }
@@ -921,20 +940,51 @@ window.ReactDOM["default"] = window.ReactDOM;
         }, {
             key: 'renderNext',
             value: function renderNext() {
-                if (this.props.currentPage < this.props.numPages - 1) {
+                var enabled = this.props.currentPage < this.props.numPages - 1;
+                if (this.props.alwaysShowPreviousAndNext || enabled) {
                     return _react['default'].createElement(
                         'a',
                         { className: 'reactable-next-page',
+                            disabled: !enabled,
                             href: pageHref(this.props.currentPage + 1),
-                            onClick: this.handleNext.bind(this) },
+                            onClick: enabled ? this.handleNext.bind(this) : undefined },
                         this.props.nextPageLabel || 'Next'
+                    );
+                }
+            }
+        }, {
+            key: 'renderFirst',
+            value: function renderFirst() {
+                var enabled = this.props.numPages !== 0;
+                if (this.props.showFirstAndLast) {
+                    return _react['default'].createElement(
+                        'a',
+                        { className: 'reactable-first-page',
+                            disabled: !enabled,
+                            href: pageHref(0),
+                            onClick: enabled ? this.handleFirst.bind(this) : undefined },
+                        this.props.firstPageLabel || 'First'
+                    );
+                }
+            }
+        }, {
+            key: 'renderLast',
+            value: function renderLast() {
+                var enabled = this.props.numPages !== 0;
+                if (this.props.showFirstAndLast) {
+                    return _react['default'].createElement(
+                        'a',
+                        { className: 'reactable-last-page',
+                            disabled: !enabled,
+                            href: pageHref(this.props.numPages - 1),
+                            onClick: enabled ? this.handleLast.bind(this) : undefined },
+                        this.props.lastPageLabel || 'Last'
                     );
                 }
             }
         }, {
             key: 'renderPageButton',
             value: function renderPageButton(className, pageNum) {
-
                 return _react['default'].createElement(
                     'a',
                     { className: className,
@@ -997,9 +1047,11 @@ window.ReactDOM["default"] = window.ReactDOM;
                         _react['default'].createElement(
                             'td',
                             { colSpan: this.props.colSpan },
+                            this.renderFirst(),
                             this.renderPrevious(),
                             pageButtons,
-                            this.renderNext()
+                            this.renderNext(),
+                            this.renderLast()
                         )
                     )
                 );
@@ -1544,6 +1596,7 @@ window.ReactDOM["default"] = window.ReactDOM;
                     _react['default'].createElement(
                         'tbody',
                         { className: 'reactable-data', key: 'tbody' },
+                        this.props.extraChildren,
                         currentChildren.length > 0 ? currentChildren : noDataText
                     ),
                     pagination === true ? _react['default'].createElement(_paginator.Paginator, { colSpan: columns.length,
@@ -1558,6 +1611,10 @@ window.ReactDOM["default"] = window.ReactDOM;
                         },
                         previousPageLabel: this.props.previousPageLabel,
                         nextPageLabel: this.props.nextPageLabel,
+                        firstPageLabel: this.props.firstPageLabel,
+                        lastPageLabel: this.props.lastPageLabel,
+                        alwaysShowPreviousAndNext: this.props.alwaysShowPreviousAndNext,
+                        showFirstAndLast: this.props.showFirstAndLast,
                         key: 'paginator' }) : null,
                     this.tfoot
                 );
@@ -1575,7 +1632,9 @@ window.ReactDOM["default"] = window.ReactDOM;
         defaultSortDescending: false,
         itemsPerPage: 0,
         filterBy: '',
-        hideFilterInput: false
+        hideFilterInput: false,
+        alwaysShowPreviousAndNext: false,
+        showFirstAndLast: false
     };
 });
 

@@ -24,10 +24,15 @@ const internalProps = {
     onPageChange: true,
     previousPageLabel: true,
     nextPageLabel: true,
+    firstPageLabel: true,
+    lastPageLabel: true,
     pageButtonLimit: true,
     childNode: true,
     data: true,
-    children: true
+    children: true,
+    alwaysShowPreviousAndNext: true,
+    showFirstAndLast: true,
+    extraChildren: true,
 };
 
 export function filterPropsFrom(baseProps) {
